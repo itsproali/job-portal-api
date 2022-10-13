@@ -1,7 +1,6 @@
-require("colors");
 require("dotenv").config();
 const dbConnect = require("./utilities/dbConnect");
-const errorHandler = require("./middleware/errorHandler")
+const errorHandler = require("./middleware/errorHandler");
 const port = process.env.PORT || 5000;
 const app = require("./app");
 
@@ -13,5 +12,5 @@ app.use(errorHandler);
 
 // Server
 app.listen(port, () => {
-  console.log(`Job Portal Server is Running on: ${port}`.blue.bold);
+  console.log(`Job Portal Server is Running on: ${port}`);
 });
