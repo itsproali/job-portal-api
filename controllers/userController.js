@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../utilities/generateToken");
 
+// Register a new User
 exports.createUser = async (req, res, next) => {
   try {
     const result = await User.create(req.body);
@@ -13,6 +14,7 @@ exports.createUser = async (req, res, next) => {
   }
 };
 
+// User Login
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
