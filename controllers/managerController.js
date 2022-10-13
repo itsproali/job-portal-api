@@ -7,7 +7,7 @@ exports.postJob = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const result = await Job.create(req.body);
-    console.log(userId, result);
+    
     if (result._id) {
       await User.updateOne(
         { _id: userId },
@@ -42,7 +42,18 @@ exports.getJobs = async (req, res, next) => {
 exports.getJobById = async (req, res, next) => {
   try {
     const jobId = req.params.id;
+
+    const userId = req.user._id;
     const data = await Job.findOne({ _id: jobId });
+
+    //   Job Poster validation
+    if (!data?.manager?.id.equals(userId)) {
+      return res.status(401).send({
+        success: false,
+        message: "You haven't access to perform this action..!",
+      });
+    }
+
     if (!data) {
       return res
         .status(204)
@@ -58,17 +69,7 @@ exports.getJobById = async (req, res, next) => {
 exports.updateJob = async (req, res, next) => {
   try {
     const jobId = req.params.id;
-   /*  Job Poster validation
-    //   const userId = ObjectId(req.user._id);
-    // const job = await Job.findOne({ _id: jobId });
-    // console.log(userId, job.manager.id);
-    // if (job?.manager?.id !== userId) {
-    //   return res.status(401).send({
-    //     success: false,
-    //     message: "You haven't access to update this job..!",
-    //   });
-    // } */
-    
+
     const result = await Job.updateOne({ _id: jobId }, req.body, {
       runValidators: true,
     });
