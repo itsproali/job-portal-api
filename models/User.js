@@ -49,6 +49,14 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+userSchema.pre("save", function () {
+  if (this.role !== "Candidate") {
+    this.appliedJob = undefined;
+  } else {
+    this.postedJob = undefined;
+  }
+});
+
 userSchema.pre("save", hashPassword);
 
 const User = mongoose.model("User", userSchema);

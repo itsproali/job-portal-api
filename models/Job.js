@@ -53,10 +53,16 @@ const jobSchema = mongoose.Schema(
     },
     candidates: [
       {
-        name: String,
+        name: {
+          type: String,
+          required: [true, "Provide a candidate name..!"],
+        },
+        id: {
+          type: ObjectId,
+          required: [true, "User id is required"],
+          ref: "User",
+        },
         resume: String,
-        email: String,
-        id: { type: ObjectId, ref: "User" },
       },
     ],
   },
