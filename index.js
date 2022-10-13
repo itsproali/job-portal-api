@@ -1,4 +1,4 @@
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 const dbConnect = require("./utilities/dbConnect");
 const errorHandler = require("./middleware/errorHandler");
 const port = process.env.PORT || 5000;

@@ -65,6 +65,15 @@ exports.applyJob = async (req, res, next) => {
       });
     }
 
+    const job = await Job.updateOne({ _id: jobId });
+
+    if (job.deadline < Date.now) {
+      return res.status(400).send({
+        success: false,
+        message: "This job is no more available..!",
+      });
+    }
+    
     const data = await Job.updateOne(
       { _id: jobId },
       { $push: { candidates: req.body }, $inc: { candidateCount: 1 } }
