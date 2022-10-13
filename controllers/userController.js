@@ -39,7 +39,11 @@ exports.login = async (req, res, next) => {
     }
 
     // Generate token
-    const token = generateToken({ email: user.email, role: user.role });
+    const token = generateToken({
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    });
 
     res
       .status(200)

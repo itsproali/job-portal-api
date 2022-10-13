@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const bcrypt = require("bcryptjs");
 const hashPassword = require("../middleware/hashPassword");
+const { ObjectId } = mongoose.Schema.Types;
 
 const userSchema = mongoose.Schema(
   {
@@ -43,6 +43,8 @@ const userSchema = mongoose.Schema(
         },
       ],
     },
+    postedJob: [{ type: ObjectId, ref: "Job" }],
+    appliedJob: [{ type: ObjectId, ref: "Job" }],
   },
   { timestamps: true }
 );
