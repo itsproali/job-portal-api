@@ -67,7 +67,7 @@ exports.applyJob = async (req, res, next) => {
 
     const data = await Job.updateOne(
       { _id: jobId },
-      { $push: { candidates: req.body } }
+      { $push: { candidates: req.body }, $inc: { candidateCount: 1 } }
     );
 
     const result = await User.updateOne(

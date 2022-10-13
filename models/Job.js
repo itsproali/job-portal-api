@@ -65,6 +65,10 @@ const jobSchema = mongoose.Schema(
         resume: String,
       },
     ],
+    candidateCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
