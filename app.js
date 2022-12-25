@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 // Not Found Route
 app.get("*", (req, res) => {
-  res.send(404).send({ message: "Route Not Found" });
+  res.status(404).send({ message: "Route Not Found" });
 });
 
 module.exports = app;

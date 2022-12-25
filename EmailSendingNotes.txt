@@ -1,0 +1,37 @@
+======= Send Email with Google Api's ========
+
+1. Go to console.cloud.google.com
+2. create a project.
+3. Click on OAuth consent screen and create an app.
+4. Go to Credentials and create one (OAuth client id).
+5. Choose Web Application and add authorized redirect uri (https://developers.google.com/oauthplayground)
+6. Save the client_id and client_secret.
+7. Go to playgrounds and click on gear icon and set the Credentials (client_id & client_secret)
+8. On the field input your own scope type: "https://mail.google.com" and click authorize Api.
+9. After go to 2nd step exchange authorization code to refresh token and save the refresh_token
+10. Install two dependency: npm i googleapis nodemailer.
+11. Create oAuthClient. 
+    Ex: 
+    const oAuth2Client = new google.auth.OAuth2(
+    process.env.OAUTH_CLIENT_ID,
+    process.env.OAUTH_CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground/"
+    );
+    oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
+12. Create an asynchronous function to send email & create access token. 
+    Ex: const accessToken = await oAuth2Client.getAccessToken();
+13. Create a Transporter.
+    Ex:
+    let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: "itsproali@gmail.com",
+      clientId: process.env.OAUTH_CLIENT_ID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      refreshToken: process.env.REFRESH_TOKEN,
+      accessToken,
+    },
+    });
+14. Finally Send the mail.
+    Ex: const info = await transporter.sendMail(mailData);

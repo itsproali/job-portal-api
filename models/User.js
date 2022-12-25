@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+// const generateConfirmationToken = require("../middleware/generateConfirmationToken");
 const hashPassword = require("../middleware/hashPassword");
 const { ObjectId } = mongoose.Schema.Types;
+const crypto = require('crypto');
 
 const userSchema = mongoose.Schema(
   {
@@ -45,9 +47,13 @@ const userSchema = mongoose.Schema(
     },
     postedJob: [{ type: ObjectId, ref: "Job" }],
     appliedJob: [{ type: ObjectId, ref: "Job" }],
+    confirmationToken: String,
+    confirmationTokenExpires: Date,
   },
   { timestamps: true }
 );
+
+userSchema.pre("save", hashPassword);
 
 userSchema.pre("save", function () {
   if (this.role !== "Candidate") {
@@ -57,7 +63,14 @@ userSchema.pre("save", function () {
   }
 });
 
-userSchema.pre("save", hashPassword);
+userSchema.methods.confirmation = function () {
+  const token = crypto.randomBytes(32).toString("hex");
+  this.confirmationToken = token;
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  this.confirmationTokenExpires = date;
+  return token;
+};
 
 const User = mongoose.model("User", userSchema);
 
